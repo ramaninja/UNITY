@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Ball : MonoBehaviour {
-
+    
 	// Use this for initialization
 	void Start () {
 		
@@ -24,9 +24,10 @@ public class Ball : MonoBehaviour {
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        other.GetComponent<MeshRenderer>().material.color = Random.ColorHSV();
-        Destroy(other.gameObject);
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    Debug.Log("AIE");
+    //    other.GetComponent<MeshRenderer>().material.color = Random.ColorHSV();
+    //    Destroy(other.gameObject);
+    //}
 }
