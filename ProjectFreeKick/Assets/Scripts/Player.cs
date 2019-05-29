@@ -26,6 +26,8 @@ public class Player : MonoBehaviour {
 
     bool m_IsGrounded = false;
 
+    AudioSource hitTheBall;
+
     private void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
@@ -35,8 +37,10 @@ public class Player : MonoBehaviour {
     void Start () {
 
         m_NextShotTime = Time.time; //Temps ecoulé depuis le moment où on a ouvert l'executable
+        hitTheBall = GetComponent<AudioSource>();
 
-	}
+
+    }
 
     //Quaternion
     //C'est un nombre 
@@ -103,6 +107,7 @@ public class Player : MonoBehaviour {
             m_StartTimePressed = Time.time;
         } else if (!fire && m_IsCharging)
         {
+            hitTheBall.Play();
             GameObject ballGO = Instantiate(m_BallPrefab);
             ballGO.transform.position = m_BallSpawnPoint.position;
             m_timePressed = Time.time - m_StartTimePressed;
