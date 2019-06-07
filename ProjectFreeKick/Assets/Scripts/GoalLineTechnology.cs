@@ -38,8 +38,15 @@ public class GoalLineTechnology : MonoBehaviour
     {
         if (other.gameObject.GetComponent<Ball>())
         {
-            Debug.Log("TEEEEST");
-            goal.Play();
+            Debug.Log("TEEEEST : " + gameObject.name);
+
+            if (gameObject.name.Equals("Centre"))
+            {
+                goal.Play();
+            } else if (gameObject.name.Equals("Transversale"))
+            {
+                goal.Play();
+            }
         }
     }
 }
