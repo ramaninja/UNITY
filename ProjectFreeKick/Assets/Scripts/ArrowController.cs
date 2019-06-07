@@ -11,7 +11,7 @@ public class ArrowController : MonoBehaviour
 
     [Header("Projectile Setup")]
     [SerializeField] GameObject m_BallPrefab;
-    [SerializeField] float m_BallInitSpeed;
+    [SerializeField] float m_PowerMultiplier;
     [SerializeField] float m_BallSpeed;
     [SerializeField] float m_BallDuration;
     [SerializeField] float m_ShotCoolDownDuration;
@@ -20,6 +20,7 @@ public class ArrowController : MonoBehaviour
     bool isCharging = false;
     float startTimePressed = 0F;
     float nextShotTime = 0F;
+    float ballSpeed = 0F;
 
     float disabledUntil = 0F;
 
@@ -27,7 +28,7 @@ public class ArrowController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        ballSpeed = m_BallSpeed;
     }
 
     // Update is called once per frame
@@ -85,23 +86,23 @@ public class ArrowController : MonoBehaviour
         {
             GameObject ballGO = Instantiate(m_BallPrefab);
             ballGO.transform.position = gameObject.transform.position;
-            ballGO.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * m_BallSpeed;
+            ballGO.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * ballSpeed;
             Destroy(ballGO, m_BallDuration);
             nextShotTime = Time.time + m_ShotCoolDownDuration;
             isCharging = false;
             gameObject.transform.localScale = new Vector3(0F, 0F, 0F);
             disabledUntil = Time.time + m_ShotCoolDownDuration;
-            m_BallSpeed = 10;
+            ballSpeed = m_BallSpeed;
         }
         else if(fire && isCharging)
         {
             if (gameObject.transform.localScale.z > 12 || gameObject.transform.localScale.z < 5)
             {
                 m_GrowSpeed *= -1;
-                m_BallInitSpeed *= -1;
+                m_PowerMultiplier *= -1;
             }
 
-            m_BallSpeed += m_BallInitSpeed;
+            ballSpeed += m_PowerMultiplier;
             gameObject.transform.localScale += new Vector3(0, 0, m_GrowSpeed);
         }
     }
