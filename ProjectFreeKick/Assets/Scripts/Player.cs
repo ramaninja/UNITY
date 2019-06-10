@@ -108,12 +108,12 @@ public class Player : MonoBehaviour {
         } else if (!fire && m_IsCharging)
         {
             hitTheBall.Play();
-            GameObject ballGO = Instantiate(m_BallPrefab);
-            ballGO.transform.position = m_BallSpawnPoint.position;
-            m_timePressed = Time.time - m_StartTimePressed;
-            ballGO.GetComponent<Rigidbody>().velocity = m_BallSpawnPoint.forward * m_BallInitSpeed * m_timePressed;
-            Destroy(ballGO, m_BallDuration);
-            m_NextShotTime = Time.time + m_ShotCoolDownDuration;
+            //GameObject ballGO = Instantiate(m_BallPrefab);
+            //ballGO.transform.position = m_BallSpawnPoint.position;
+            //m_timePressed = Time.time - m_StartTimePressed;
+            //ballGO.GetComponent<Rigidbody>().velocity = m_BallSpawnPoint.forward * m_BallInitSpeed * m_timePressed;
+            //Destroy(ballGO, m_BallDuration);
+            //m_NextShotTime = Time.time + m_ShotCoolDownDuration;
             m_IsCharging = false;
         }
     }
