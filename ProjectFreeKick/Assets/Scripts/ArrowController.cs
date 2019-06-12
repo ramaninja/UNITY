@@ -85,6 +85,11 @@ public class ArrowController : MonoBehaviour
         else if (!fire && isCharging)
         {
             GameObject ballGO = Instantiate(m_BallPrefab);
+
+            ballGO.GetComponent<Ball>().speed = ballSpeed;
+            float effect = gameObject.transform.rotation.z;
+            ballGO.GetComponent<Ball>().effect = effect;
+
             ballGO.transform.position = gameObject.transform.position;
             ballGO.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * ballSpeed;
             Destroy(ballGO, m_BallDuration);
