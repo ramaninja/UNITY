@@ -7,24 +7,17 @@ public class GoalLineTechnology : MonoBehaviour
 {
     [SerializeField] GameObject m_player;
     [SerializeField] int m_points;
-    private AudioSource audio1;
-    private AudioSource audio2;
-    //private AudioSource audio3;
+    private AudioSource crowdSound;
+    private AudioSource comment1;
+    private AudioSource comment2;
     private static bool is_scored_yet;
     // Start is called before the first frame update
     void Start()
     {
         var audios = GetComponents<AudioSource>();
-        audio1 = audios[0];
-        try
-        {
-            audio2 = audios[1];
-        } catch (Exception e)
-        {
-            Debug.Log(e.ToString());
-        }
-        
-        //audio3 = audios[2];
+        crowdSound = audios[0];
+        comment1 = audios[1];
+        comment2 = audios[2];
 
         is_scored_yet = true;
     }
@@ -54,11 +47,27 @@ public class GoalLineTechnology : MonoBehaviour
 
     IEnumerator blockTrigger()
     {
-        audio2.Play();
+        System.Random rand = new System.Random();
+        AudioSource tmp;
+
+        if (rand.Next(0, 2) == 0)
+        {
+            tmp = comment1;
+        }
+        else
+        {
+            tmp = comment2;
+        }
+
+        tmp.Play();
+
         Player p = (Player)m_player.GetComponent(typeof(Player));
         p.ScoreIncrement(m_points);
+
         is_scored_yet = false;
-        yield return new WaitUntil(() => audio2.isPlaying == false);
+
+        yield return new WaitUntil(() => tmp.isPlaying == false);
+
         is_scored_yet = true;
 
     }
@@ -68,7 +77,7 @@ public class GoalLineTechnology : MonoBehaviour
         
         if (other.gameObject.GetComponent<Ball>())
         {
-            audio1.Play();
+            crowdSound.Play();
 
             if (is_scored_yet)
             {

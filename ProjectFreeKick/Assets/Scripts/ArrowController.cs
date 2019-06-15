@@ -24,11 +24,14 @@ public class ArrowController : MonoBehaviour
 
     float disabledUntil = 0F;
 
+    AudioSource hitTheBall;
+
 
     // Start is called before the first frame update
     void Start()
     {
         ballSpeed = m_BallSpeed;
+        hitTheBall = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -57,7 +60,7 @@ public class ArrowController : MonoBehaviour
         if (zDestinationAngle < 30 || zDestinationAngle > 330)
             transform.Rotate(vector, m_RotationSpeed * Time.deltaTime * input);
 
-        Debug.Log(zDestinationAngle);
+        //Debug.Log(zDestinationAngle);
     }
 
     void globalRotate(bool leftRotate, bool rightRotate, bool upRotate, bool downRotate)
@@ -96,6 +99,8 @@ public class ArrowController : MonoBehaviour
         else if (!fire && isCharging)
         {
             GameObject ballGO = Instantiate(m_BallPrefab);
+
+            hitTheBall.Play();
 
             ballGO.GetComponent<Ball>().speed = ballSpeed;
             float effect = gameObject.transform.rotation.z;

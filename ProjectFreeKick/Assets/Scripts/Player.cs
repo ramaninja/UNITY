@@ -22,7 +22,7 @@ public class Player : MonoBehaviour {
     bool m_IsCharging = false;
     float m_timePressed;
     float m_StartTimePressed;
-    int score = 0;
+    int score;
 
     float m_NextShotTime;
 
@@ -30,19 +30,36 @@ public class Player : MonoBehaviour {
 
     bool m_IsGrounded = false;
 
-    AudioSource hitTheBall;
+    AudioSource comment1;
+    AudioSource comment2;
 
     private void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
+        score = 0;
+        SetScoreDisplay();
+
+        var audios = GetComponents<AudioSource>();
+        comment1 = audios[0];
+        comment2 = audios[1];
+
+        System.Random rand = new System.Random();
+
+
+        if (rand.Next(0, 2) == 0)
+        {
+            comment1.Play();
+        }
+        else
+        {
+            comment2.Play();
+        }
     }
 
     // Use this for initialization
     void Start () {
 
         m_NextShotTime = Time.time; //Temps ecoulé depuis le moment où on a ouvert l'executable
-        hitTheBall = GetComponent<AudioSource>();
-        SetScoreDisplay();
     }
 
     //Quaternion
@@ -110,7 +127,6 @@ public class Player : MonoBehaviour {
             m_StartTimePressed = Time.time;
         } else if (!fire && m_IsCharging)
         {
-            hitTheBall.Play();
             //GameObject ballGO = Instantiate(m_BallPrefab);
             //ballGO.transform.position = m_BallSpawnPoint.position;
             //m_timePressed = Time.time - m_StartTimePressed;
