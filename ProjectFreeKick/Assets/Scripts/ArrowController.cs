@@ -53,12 +53,16 @@ public class ArrowController : MonoBehaviour
         else if (rightRotate)
             input = -1;
 
-        transform.Rotate(vector, m_RotationSpeed * Time.deltaTime * input);
+        float zDestinationAngle = gameObject.transform.localEulerAngles.z + (m_RotationSpeed * Time.deltaTime * input);
+        if (zDestinationAngle < 30 || zDestinationAngle > 330)
+            transform.Rotate(vector, m_RotationSpeed * Time.deltaTime * input);
+
+        Debug.Log(zDestinationAngle);
     }
 
     void globalRotate(bool leftRotate, bool rightRotate, bool upRotate, bool downRotate)
     {
-        float xAngle = 0, yAngle = 0, zAngle = 0;
+        float xAngle = 0, yAngle = 0;
 
         if (leftRotate)
             yAngle = -m_RotationSpeed / m_GlobalLocalRatio;
@@ -70,7 +74,14 @@ public class ArrowController : MonoBehaviour
         else if (downRotate)
             xAngle = m_RotationSpeed / m_GlobalLocalRatio;
 
-        gameObject.transform.Rotate(xAngle, yAngle, zAngle, Space.World);
+        float yAngleObj = gameObject.transform.localEulerAngles.y;
+        float xAngleObj = gameObject.transform.localEulerAngles.x;
+
+        if (yAngleObj+yAngle < 45 || yAngleObj+yAngle > 315)
+            gameObject.transform.Rotate(0, yAngle, 0, Space.World);
+        
+        if (xAngleObj + xAngle < 5 || xAngleObj + xAngle > 322)
+            gameObject.transform.Rotate(xAngle, 0, 0, Space.World);
     }
 
     void fireControl()

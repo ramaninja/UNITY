@@ -23,9 +23,10 @@ public class Ball : MonoBehaviour {
         if (!collided)
         {
             var x = transform.eulerAngles.z * Mathf.Deg2Rad;
-            angle += 0 - (effect/30);
-            Debug.Log(angle);
-            transform.position += new Vector3(x+angle, 0, 0) * speed * Time.deltaTime;
+            angle += 0 - (effect/90);
+            gameObject.transform.localPosition += new Vector3(angle, 0, 0) * speed * Time.deltaTime;
+
+            gameObject.transform.Rotate(0, effect, 0, Space.Self);
         }
 
     }
@@ -34,18 +35,11 @@ public class Ball : MonoBehaviour {
     {
         Debug.Log(name + " HIIIIT " + collision.gameObject.name);
 
-        collided = false;
+        collided = true;
 
         if (collision.gameObject.GetComponent<Destroyable>())
         {
             Destroy(collision.gameObject);
         }
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    Debug.Log("AIE");
-    //    other.GetComponent<MeshRenderer>().material.color = Random.ColorHSV();
-    //    Destroy(other.gameObject);
-    //}
 }
