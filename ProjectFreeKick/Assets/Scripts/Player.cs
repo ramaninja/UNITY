@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour {
@@ -16,9 +17,12 @@ public class Player : MonoBehaviour {
     [SerializeField] float m_BallDuration;
     [SerializeField] float m_ShotCoolDownDuration;
 
+    [SerializeField] Text m_DisplayScore;
+
     bool m_IsCharging = false;
     float m_timePressed;
     float m_StartTimePressed;
+    int score = 0;
 
     float m_NextShotTime;
 
@@ -38,8 +42,7 @@ public class Player : MonoBehaviour {
 
         m_NextShotTime = Time.time; //Temps ecoulé depuis le moment où on a ouvert l'executable
         hitTheBall = GetComponent<AudioSource>();
-
-
+        SetScoreDisplay();
     }
 
     //Quaternion
@@ -128,5 +131,23 @@ public class Player : MonoBehaviour {
     private void OnCollisionExit(Collision collision)
     {
         m_IsGrounded = collision.gameObject.GetComponent<Ground>() ? false : m_IsGrounded;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("TRIGGER");
+    }
+
+    public void ScoreIncrement(int points)
+    {
+        //Ball ball = (Ball) m_BallPrefab.GetComponent(typeof(Ball));
+        score+=points;
+        SetScoreDisplay();
+        Debug.Log(score);
+    }
+
+    public void SetScoreDisplay()
+    {
+        m_DisplayScore.text = "Score : " + score;
     }
 }
