@@ -1,26 +1,38 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GoalLineTechnology : MonoBehaviour
 {
-    private AudioSource crowd;
-    private AudioSource zone;
-    private AudioSource zone2;
+    [SerializeField] GameObject m_player;
+    [SerializeField] int m_points;
+    private AudioSource audio1;
+    private AudioSource audio2;
+    //private AudioSource audio3;
+    private static bool is_scored_yet;
     // Start is called before the first frame update
     void Start()
     {
         var audios = GetComponents<AudioSource>();
-        Debug.Log("HHHHHHHHHH " + audios.Length);
-        crowd = audios[0];
-        zone = audios[1];
-        zone2 = audios[2];
+        audio1 = audios[0];
+        try
+        {
+            audio2 = audios[1];
+        } catch (Exception e)
+        {
+            Debug.Log(e.ToString());
+        }
+        
+        //audio3 = audios[2];
+
+        is_scored_yet = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        //gameObject.GetComponent<Collider>().enabled = is_scored_yet;
     }
 
     //private void OnCollisionEnter(Collision collision)
@@ -40,31 +52,28 @@ public class GoalLineTechnology : MonoBehaviour
     //    }
     //}
 
+    IEnumerator blockTrigger()
+    {
+        audio2.Play();
+        Player p = (Player)m_player.GetComponent(typeof(Player));
+        p.ScoreIncrement(m_points);
+        is_scored_yet = false;
+        yield return new WaitUntil(() => audio2.isPlaying == false);
+        is_scored_yet = true;
+
+    }
+
     private void OnTriggerEnter(Collider other)
     {
+        
         if (other.gameObject.GetComponent<Ball>())
         {
-            crowd.Play();
+            audio1.Play();
 
-            System.Random rand = new System.Random();
-
-            if (rand.Next(2)%2 == 0)
+            if (is_scored_yet)
             {
-                zone.Play();
-            } else
-            {
-                zone2.Play();
+                StartCoroutine(blockTrigger());
             }
-            
-            //Debug.Log("TEEEEST : " + gameObject.name);
-
-            //if (gameObject.name.Equals("Centre"))
-            //{
-            //    goal.Play();
-            //} else if (gameObject.name.Equals("Transversale"))
-            //{
-            //    goal.Play();
-            //}
         }
     }
 }
