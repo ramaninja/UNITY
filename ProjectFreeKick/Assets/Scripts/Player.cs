@@ -19,6 +19,10 @@ public class Player : MonoBehaviour {
 
     [SerializeField] Text m_DisplayScore;
 
+    [Header("Levels")]
+    [SerializeField] GameObject m_level1;
+    [SerializeField] GameObject m_level2;
+
     bool m_IsCharging = false;
     float m_timePressed;
     float m_StartTimePressed;
@@ -29,6 +33,8 @@ public class Player : MonoBehaviour {
     Rigidbody m_Rigidbody;
 
     bool m_IsGrounded = false;
+
+    public int currentLevel = 0;
 
     AudioSource comment1;
     AudioSource comment2;
@@ -41,6 +47,12 @@ public class Player : MonoBehaviour {
         GameObject.Find("ReplayCamera2").GetComponent<Camera>().enabled = false;
         GameObject.Find("ReplayCamera3").GetComponent<Camera>().enabled = false;
         GameObject.Find("MainCamera").GetComponent<Camera>().enabled = true;
+
+        //GameObject.Find("Level1").SetActive(false);
+        m_level1 = GameObject.Find("Level1");
+        m_level1.SetActive(false);
+        m_level2 = GameObject.Find("Level2");
+        m_level2.SetActive(false);
 
         m_Rigidbody = GetComponent<Rigidbody>();
         score = 0;
@@ -74,24 +86,25 @@ public class Player : MonoBehaviour {
     //Donc on peut faire des opérations
     //Deux multiplication successives -> deux rotations successives
     //Les opérations se font dans le sens inverse
-	
+
     //Update() == comportement cinématique
     //FixedUpdate() == comportement physique ; need a rigidbody
     //====> Dans le FixedUpdate(), on n'émet que des souhaits, donc c'est possible qu'un objet ne bouge pas à la frame n
-    
 
-	// Update is called once per frame
-	//void Update () {
 
- //       var hInput = Input.GetAxis("Horizontal");
- //       var vInput = Input.GetAxis("Vertical");
+    //Update is called once per frame
 
- //       // new Vector3(0,0,1) == Vector3.forward
- //       transform.Translate(vInput * Vector3.forward * m_TranslationSpeed * Time.deltaTime, Space.Self);
- //       // transform.Translate(hInput * Vector3.right * m_TranslationSpeed * Time.deltaTime, Space.Self);
+    void Update()
+    {
+        //       var hInput = Input.GetAxis("Horizontal");
+        //       var vInput = Input.GetAxis("Vertical");
 
- //       transform.Rotate(Vector3.up, m_RotationSpeed * Time.deltaTime * hInput);
- //   }
+        //       // new Vector3(0,0,1) == Vector3.forward
+        //       transform.Translate(vInput * Vector3.forward * m_TranslationSpeed * Time.deltaTime, Space.Self);
+        //       // transform.Translate(hInput * Vector3.right * m_TranslationSpeed * Time.deltaTime, Space.Self);
+
+        //       transform.Rotate(Vector3.up, m_RotationSpeed * Time.deltaTime * hInput);
+    }
 
     private void FixedUpdate()
     {
@@ -161,12 +174,31 @@ public class Player : MonoBehaviour {
         Debug.Log("TRIGGER");
     }
 
+    IEnumerator LevelUp()
+    {
+        currentLevel++;
+
+        yield return new WaitForSeconds(1);
+
+        if (currentLevel == 1)
+        {
+            m_level1.SetActive(true);
+            transform.position = m_level1.transform.position - new Vector3(0, 0, 15.0f);
+        }
+        else if (currentLevel == 2)
+        {
+            m_level1.SetActive(false);
+            m_level2.SetActive(true);
+            transform.position = m_level2.transform.position - new Vector3(0, 0, 15.0f);
+        }
+    }
+
     public void ScoreIncrement(int points)
     {
-        //Ball ball = (Ball) m_BallPrefab.GetComponent(typeof(Ball));
         score+=points;
         SetScoreDisplay();
-        Debug.Log(score);
+
+        StartCoroutine(LevelUp());
     }
 
     public void SetScoreDisplay()
