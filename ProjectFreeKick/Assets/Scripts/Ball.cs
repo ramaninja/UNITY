@@ -26,7 +26,6 @@ public class Ball : MonoBehaviour {
 
         rb = gameObject.GetComponent<Rigidbody>();
         mainCam = GameObject.Find("MainCamera").GetComponent<Camera>();
-        //GameObject.Find("ReplayCameras").GetComponent<Camera>().enabled = false;
         replayCam = GameObject.Find("ReplayCamera" + rand.Next(0,4)).GetComponent<Camera>();
 
         m_positions = new List<Vector3>();
@@ -86,9 +85,6 @@ public class Ball : MonoBehaviour {
     {
         isReplaying = true;
         rb.detectCollisions = false;
-        //mainCam.enabled = false;
-        //replayCam.enabled = true;
-        //mainCam.enabled = false;
     }
 
     public void StopReplay()
@@ -98,8 +94,6 @@ public class Ball : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(name + " HIIIIT " + collision.gameObject.name);
-
         collided = true;
 
         if (collision.gameObject.GetComponent<Destroyable>())
