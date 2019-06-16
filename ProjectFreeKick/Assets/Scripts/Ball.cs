@@ -7,6 +7,13 @@ public class Ball : MonoBehaviour {
 
     public float speed;
     public float effect;
+    public Rigidbody rb;
+
+    public bool isReplaying = false;
+
+    private List<Vector3> m_positions;
+    public Camera mainCam;
+    public Camera replayCam;
 
     bool collided = false;
     float angle = 0.0F;
@@ -14,6 +21,15 @@ public class Ball : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         Debug.Log("speed : " + speed + ", effect : " + effect);
+
+        System.Random rand = new System.Random();
+
+        rb = gameObject.GetComponent<Rigidbody>();
+        mainCam = GameObject.Find("MainCamera").GetComponent<Camera>();
+        //GameObject.Find("ReplayCameras").GetComponent<Camera>().enabled = false;
+        replayCam = GameObject.Find("ReplayCamera" + rand.Next(0,4)).GetComponent<Camera>();
+
+        m_positions = new List<Vector3>();
 		
 	}
 	
@@ -31,6 +47,55 @@ public class Ball : MonoBehaviour {
 
     }
 
+    private void FixedUpdate()
+    {
+        //Debug.Log("SIZE : " + m_positions.Count);
+        if (isReplaying)
+        {
+            replayCam.enabled = true;
+            mainCam.enabled = false;
+            Replay();
+        } else
+        {
+            replayCam.enabled = false;
+            mainCam.enabled = true;
+            Record();
+        }
+    }
+
+    public void Replay()
+    {
+        if (m_positions.Count > 0)
+        {
+            Time.timeScale = 0.4f;
+            transform.position = m_positions[0];
+            m_positions.RemoveAt(0);
+        } else
+        {
+            Time.timeScale = 1;
+            StopReplay();
+        }
+    }
+
+    public void Record()
+    {
+        m_positions.Add(transform.position);
+    }
+
+    public void StartReplay()
+    {
+        isReplaying = true;
+        rb.detectCollisions = false;
+        //mainCam.enabled = false;
+        //replayCam.enabled = true;
+        //mainCam.enabled = false;
+    }
+
+    public void StopReplay()
+    {
+        isReplaying = false;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log(name + " HIIIIT " + collision.gameObject.name);
@@ -41,5 +106,15 @@ public class Ball : MonoBehaviour {
         {
             Destroy(collision.gameObject);
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+
+        if (other.gameObject.GetComponent<GoalLineTechnology>())
+        {
+            StartReplay();
+        }
+
     }
 }

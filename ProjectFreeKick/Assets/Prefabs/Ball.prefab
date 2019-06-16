@@ -122,3 +122,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a7f690c6c03b1f478bef59a2bec5cf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 0
+  effect: 0
+  m_goalLines:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  isReplaying: 0

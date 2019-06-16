@@ -35,6 +35,13 @@ public class Player : MonoBehaviour {
 
     private void Awake()
     {
+        
+        GameObject.Find("ReplayCamera0").GetComponent<Camera>().enabled = false;
+        GameObject.Find("ReplayCamera1").GetComponent<Camera>().enabled = false;
+        GameObject.Find("ReplayCamera2").GetComponent<Camera>().enabled = false;
+        GameObject.Find("ReplayCamera3").GetComponent<Camera>().enabled = false;
+        GameObject.Find("MainCamera").GetComponent<Camera>().enabled = true;
+
         m_Rigidbody = GetComponent<Rigidbody>();
         score = 0;
         SetScoreDisplay();

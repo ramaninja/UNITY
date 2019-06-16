@@ -23,7 +23,7 @@ public class GoalLineTechnology : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         //gameObject.GetComponent<Collider>().enabled = is_scored_yet;
     }
@@ -45,29 +45,29 @@ public class GoalLineTechnology : MonoBehaviour
     //    }
     //}
 
-    IEnumerator blockTrigger()
+    IEnumerator PlaysSounds()
     {
         System.Random rand = new System.Random();
+        int val = rand.Next(0, 2);
         AudioSource tmp;
 
-        if (rand.Next(0, 2) == 0)
+        if (val == 0)
         {
-            tmp = comment1;
+            comment1.Play();
         }
         else
         {
-            tmp = comment2;
+            comment2.Play();
         }
-
-        tmp.Play();
 
         Player p = (Player)m_player.GetComponent(typeof(Player));
         p.ScoreIncrement(m_points);
 
         is_scored_yet = false;
+        //gameObject.GetComponent<Collider>().enabled = false;
 
-        yield return new WaitUntil(() => tmp.isPlaying == false);
-
+        yield return new WaitUntil(() => val == 0 ? comment1.isPlaying == false : comment2.isPlaying == false);
+        //gameObject.GetComponent<Collider>().enabled = true;
         is_scored_yet = true;
 
     }
@@ -77,11 +77,11 @@ public class GoalLineTechnology : MonoBehaviour
         
         if (other.gameObject.GetComponent<Ball>())
         {
-            crowdSound.Play();
+             crowdSound.Play();
 
             if (is_scored_yet)
             {
-                StartCoroutine(blockTrigger());
+                StartCoroutine(PlaysSounds());
             }
         }
     }
