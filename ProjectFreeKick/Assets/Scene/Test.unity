@@ -12304,6 +12304,9 @@ MonoBehaviour:
   m_BallDuration: 10
   m_ShotCoolDownDuration: 1
   m_DisplayScore: {fileID: 111103935}
+  m_level1: {fileID: 1066422120}
+  m_level2: {fileID: 979634125}
+  currentLevel: 0
 --- !u!54 &1812590480
 Rigidbody:
   m_ObjectHideFlags: 0
