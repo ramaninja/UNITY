@@ -55,7 +55,7 @@ public class Pause : MonoBehaviour
         Time.timeScale = 0;
         m_pausePanel.SetActive(true);
         m_player.GetComponent<Player>().enabled = false;
-        m_arrow.GetComponent<ArrowController    >().enabled = false;
+        m_arrow.GetComponent<ArrowController>().enabled = false;
     }
 
     public void Continue()
